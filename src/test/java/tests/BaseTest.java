@@ -11,11 +11,11 @@ public class BaseTest {
     @BeforeMethod
     public void setup() {
         SmartLogger.logInfo("Set base uri");
-        APIUtils.setupBaseUri(PropertiesManager.getConfigValue(Uri.API_URI.getUri()));
+        APIUtils.setupBaseUri(PropertiesManager.getTestDataValue(Uri.API_URI.getUri()));
         SmartLogger.logInfo("Set window size maximize");
-        AqualityServices.getBrowser().getDriver().manage().window().maximize();
+       // AqualityServices.getBrowser().getDriver().manage().window().maximize();
         SmartLogger.logInfo("Timeout load browser");
-        AqualityServices.getBrowser().getDriver().manage().timeouts();
+    //    AqualityServices.getBrowser().getDriver().manage().timeouts();
     }
 
     @AfterMethod
