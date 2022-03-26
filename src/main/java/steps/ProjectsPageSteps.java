@@ -14,6 +14,10 @@ public class ProjectsPageSteps {
         return projectsPage.getVersionText().replaceAll("[^0-9]", "");
     }
 
+    public static void clickNexageLnk() {
+        projectsPage.clickNexageLnk();
+    }
+
     public static void assertIsCorrectVersion(String version) {
         Assert.assertEquals(getVersionNumber(), version, "Version isn't correct.");
     }

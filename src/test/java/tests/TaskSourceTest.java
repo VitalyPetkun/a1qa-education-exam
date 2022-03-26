@@ -45,5 +45,9 @@ public class TaskSourceTest extends BaseTest {
         SmartLogger.logInfo("Refresh current page");
         AqualityServices.getBrowser().getDriver().navigate().refresh();
         ProjectsPageSteps.assertIsCorrectVersion(VARIANT);
+
+        SmartLogger.logStep(3, "Get Nexage project tests");
+        ProjectsPageSteps.clickNexageLnk();
+
     }
 }
