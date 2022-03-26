@@ -23,7 +23,7 @@ public class TaskSourceTest extends BaseTest {
     public void addTest() {
         SmartLogger.logStep(1, "Get token");
         response = WebApiUtils.getToken(variant);
-        token = JsonConverter.getObject(JsonConverter.getString(response.getBody()),Token.class);
+        token = new Token(JsonConverter.getString(response.getBody()));
         Assert.assertEquals(response.getStatus(), HttpStatus.SC_OK, "Wrong status code returned");
         Assert.assertNotNull(token.getToken(), "Token is null");
 
