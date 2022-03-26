@@ -1,17 +1,16 @@
 package tests;
 
-import aquality.selenium.browser.AqualityServices;
 import org.testng.annotations.*;
 import services.Uri;
 import utils.*;
-import utils.api.APIUtils;
+import utils.api.ApiUtils;
 
 public class BaseTest {
 
     @BeforeMethod
     public void setup() {
         SmartLogger.logInfo("Set base uri");
-        APIUtils.setupBaseUri(PropertiesManager.getTestDataValue(Uri.API_URI.getUri()));
+        ApiUtils.setupBaseUri(PropertiesManager.getTestDataValue(Uri.API_URI.getUri()));
         SmartLogger.logInfo("Set window size maximize");
       //  AqualityServices.getBrowser().getDriver().manage().window().maximize();
         SmartLogger.logInfo("Timeout load browser");
@@ -21,6 +20,6 @@ public class BaseTest {
     @AfterMethod
     protected void quitDriver() {
         SmartLogger.logInfo("Quit browser");
-        AqualityServices.getBrowser().getDriver().quit();
+    //    AqualityServices.getBrowser().getDriver().quit();
     }
 }

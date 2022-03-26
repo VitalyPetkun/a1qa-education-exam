@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class Token {
 
-    private String value;
+    private String token;
 }
