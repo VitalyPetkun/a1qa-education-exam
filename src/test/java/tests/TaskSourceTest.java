@@ -1,20 +1,27 @@
 package tests;
 
+import aquality.selenium.browser.AqualityServices;
 import models.Token;
 import org.apache.http.HttpStatus;
+import org.openqa.selenium.Alert;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import services.TestDataVariables;
+import services.Url;
+import steps.AuthorizationPageSteps;
 import utils.JsonConverter;
 import utils.PropertiesManager;
 import utils.SmartLogger;
 import utils.api.Response;
 import utils.api.WebApiUtils;
 
-import static services.TestDataVariables.*;
 
 public class TaskSourceTest extends BaseTest {
 
-    private final String variant = PropertiesManager.getTestDataValue(VARIANT.getVariable());
+    private final String VARIANT = PropertiesManager.getTestDataValue(TestDataVariables.VARIANT.getVariable());
+    private final String WEB_URL = PropertiesManager.getTestDataValue(Url.WEB_URL.getUrl());
+    private final String USER_NAME = PropertiesManager.getTestDataValue(TestDataVariables.USER_NAME.getVariable());
+    private final String USER_PASSWORD = PropertiesManager.getTestDataValue(TestDataVariables.USER_PASSWORD.getVariable());
 
     private Response response;
     private Token token;
@@ -22,11 +29,13 @@ public class TaskSourceTest extends BaseTest {
     @Test
     public void addTest() {
         SmartLogger.logStep(1, "Get token");
-        response = WebApiUtils.getToken(variant);
+        response = WebApiUtils.getToken(VARIANT);
         token = new Token(JsonConverter.getString(response.getBody()));
         Assert.assertEquals(response.getStatus(), HttpStatus.SC_OK, "Wrong status code returned");
         Assert.assertNotNull(token.getToken(), "Token is null");
 
         SmartLogger.logStep(2, "Authorization");
+        AqualityServices.getBrowser().goTo(AuthorizationPageSteps.getUrl(USER_NAME, USER_PASSWORD, WEB_URL));
+
     }
 }

@@ -2,7 +2,9 @@ package services;
 
 public enum TestDataVariables {
 
-    VARIANT("variant");
+    VARIANT("variant"),
+    USER_NAME("userName"),
+    USER_PASSWORD("userPassword");
 
     private String variable;
 
