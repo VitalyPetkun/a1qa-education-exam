@@ -3,12 +3,13 @@ package tests;
 import aquality.selenium.browser.AqualityServices;
 import models.Token;
 import org.apache.http.HttpStatus;
-import org.openqa.selenium.Alert;
+import org.openqa.selenium.Cookie;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import services.TestDataVariables;
 import services.Url;
 import steps.AuthorizationPageSteps;
+import steps.ProjectsPageSteps;
 import utils.JsonConverter;
 import utils.PropertiesManager;
 import utils.SmartLogger;
@@ -25,6 +26,7 @@ public class TaskSourceTest extends BaseTest {
 
     private Response response;
     private Token token;
+    private Cookie cookie;
 
     @Test
     public void addTest() {
@@ -35,7 +37,13 @@ public class TaskSourceTest extends BaseTest {
         Assert.assertNotNull(token.getToken(), "Token is null");
 
         SmartLogger.logStep(2, "Authorization");
+        SmartLogger.logInfo("Go projects page");
         AqualityServices.getBrowser().goTo(AuthorizationPageSteps.getUrl(USER_NAME, USER_PASSWORD, WEB_URL));
-
+        ProjectsPageSteps.assertIsOpenWelcomePage();
+        cookie = new Cookie("token", token.getToken());
+        AqualityServices.getBrowser().getDriver().manage().addCookie(cookie);
+        SmartLogger.logInfo("Refresh current page");
+        AqualityServices.getBrowser().getDriver().navigate().refresh();
+        ProjectsPageSteps.assertIsCorrectVersion(VARIANT);
     }
 }

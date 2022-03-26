@@ -1,6 +1,7 @@
 package utils.api;
 
 import utils.SmartLogger;
+
 import static io.restassured.RestAssured.*;
 
 public class ApiUtils {
