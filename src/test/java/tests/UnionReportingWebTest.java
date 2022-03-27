@@ -1,6 +1,6 @@
 package tests;
 
-import aquality.selenium.browser.AqualityServices;
+import browser.Browser;
 import models.Token;
 import org.apache.http.HttpStatus;
 import org.openqa.selenium.Cookie;
@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 import services.TestDataVariables;
 import services.Url;
 import steps.AddProjectPageSteps;
-import steps.AuthorizationPageSteps;
 import steps.NexagePageSteps;
 import steps.ProjectsPageSteps;
 import utils.JsonConverter;
@@ -45,12 +44,11 @@ public class UnionReportingWebTest extends BaseTest {
         Assert.assertNotNull(token.getToken(), "Token is null.");
 
         SmartLogger.logStep(2, "Authorization.");
-        AuthorizationPageSteps.authorization(USER_NAME, USER_PASSWORD, WEB_URL);
+        Browser.goToAuthorization(USER_NAME, USER_PASSWORD, WEB_URL);
         ProjectsPageSteps.assertIsOpenProjectsPage();
         cookie = new Cookie("token", token.getToken());
-        AqualityServices.getBrowser().getDriver().manage().addCookie(cookie);
-        SmartLogger.logInfo("Refresh current page.");
-        AqualityServices.getBrowser().getDriver().navigate().refresh();
+        Browser.addCookie(cookie);
+        Browser.refresh();
         ProjectsPageSteps.assertIsCorrectVersion(VARIANT);
 
         SmartLogger.logStep(3, "Get Nexage project tests.");
@@ -63,29 +61,18 @@ public class UnionReportingWebTest extends BaseTest {
         NexagePageSteps.assertIsContainTests(tests);
 
         SmartLogger.logStep(4, "Add new project.");
-        SmartLogger.logInfo("Go back window.");
-        AqualityServices.getBrowser().goBack();
+        Browser.goBack();
         ProjectsPageSteps.assertIsOpenProjectsPage();
-        SmartLogger.logInfo("Get handle current window.");
-        originalWindow = AqualityServices.getBrowser().getDriver().getWindowHandle();
+        originalWindow = Browser.getWindowHandle();
         ProjectsPageSteps.clickAddBtn();
-        SmartLogger.logInfo("Switch to other window.");
-        for (String windowHandle : AqualityServices.getBrowser().getDriver().getWindowHandles()) {
-            if(!originalWindow.contentEquals(windowHandle)) {
-                AqualityServices.getBrowser().getDriver().switchTo().window(windowHandle);
-                break;
-            }
-        }
+        Browser.switchToOtherWindow(originalWindow);
         AddProjectPageSteps.assertIsOpenAddProjectPage();
         AddProjectPageSteps.addNewProject(NEW_PROJECT_NAME);
         AddProjectPageSteps.assertIsDisplayedSuccessfulSaveMessage();
-        SmartLogger.logInfo("Close current window.");
-        AqualityServices.getBrowser().getDriver().close();
-        SmartLogger.logInfo("Switch to original window.");
-        AqualityServices.getBrowser().getDriver().switchTo().window(originalWindow);
+        Browser.close();
+        Browser.switchTo(originalWindow);
         AddProjectPageSteps.assertIsCloseAddProjectPage();
-        SmartLogger.logInfo("Refresh current window.");
-        AqualityServices.getBrowser().getDriver().navigate().refresh();
+        Browser.refresh();
         ProjectsPageSteps.assertIsContainsProjectInPageList(NEW_PROJECT_NAME);
     }
 }

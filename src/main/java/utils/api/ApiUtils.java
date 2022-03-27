@@ -10,7 +10,7 @@ public class ApiUtils {
     }
 
     public static void setupBaseUri(String currentBaseUri) {
-        SmartLogger.logInfo("Setup baseUri");
+        SmartLogger.logInfo("Setup base uri.");
         baseURI = currentBaseUri;
     }
 
