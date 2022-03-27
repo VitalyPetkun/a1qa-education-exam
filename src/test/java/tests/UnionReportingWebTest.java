@@ -64,15 +64,21 @@ public class UnionReportingWebTest extends BaseTest {
         Browser.goBack();
         ProjectsPageSteps.assertIsOpenProjectsPage();
         originalWindow = Browser.getWindowHandle();
-        ProjectsPageSteps.clickAddBtn();
-        Browser.switchToOtherWindow(originalWindow);
-        AddProjectPageSteps.assertIsOpenAddProjectPage();
-        AddProjectPageSteps.addNewProject(NEW_PROJECT_NAME);
-        AddProjectPageSteps.assertIsDisplayedSuccessfulSaveMessage();
-        Browser.close();
-        Browser.switchTo(originalWindow);
-        AddProjectPageSteps.assertIsCloseAddProjectPage();
-        Browser.refresh();
-        ProjectsPageSteps.assertIsContainsProjectInPageList(NEW_PROJECT_NAME);
+        addNewProject();
+    }
+
+    private void addNewProject() {
+        if(!ProjectsPageSteps.isContainsProject(NEW_PROJECT_NAME)) {
+            ProjectsPageSteps.clickAddBtn();
+            Browser.switchToOtherWindow(originalWindow);
+            AddProjectPageSteps.assertIsOpenAddProjectPage();
+            AddProjectPageSteps.addNewProject(NEW_PROJECT_NAME);
+            AddProjectPageSteps.assertIsDisplayedSuccessfulSaveMessage();
+            Browser.close();
+            Browser.switchTo(originalWindow);
+            AddProjectPageSteps.assertIsCloseAddProjectPage();
+            Browser.refresh();
+            ProjectsPageSteps.assertIsContainsProjectInPageList(NEW_PROJECT_NAME);
+        }
     }
 }

@@ -22,7 +22,7 @@ public class ProjectsPageSteps {
         projectsPage.clickAddBtn();
     }
 
-    private static boolean isContainsProject(String name) {
+    public static boolean isContainsProject(String name) {
         for (int i = 1; i < projectsPage.getSizeProjects(); i++) {
             if (projectsPage.getNameProject(i).equals(name))
                 return true;
