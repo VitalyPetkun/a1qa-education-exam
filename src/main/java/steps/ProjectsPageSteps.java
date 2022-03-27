@@ -19,7 +19,7 @@ public class ProjectsPageSteps {
     }
 
     public static void assertIsCorrectVersion(String version) {
-        Assert.assertEquals(getVersionNumber(), version, "Version isn't correct.");
+        Assert.assertTrue(getVersionNumber().equals(version), "Version isn't correct.");
     }
 
     public static void assertIsOpenWelcomePage() {

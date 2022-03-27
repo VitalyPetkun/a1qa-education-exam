@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import services.TestDataVariables;
 import services.Url;
 import steps.AuthorizationPageSteps;
+import steps.NexagePageSteps;
 import steps.ProjectsPageSteps;
 import utils.JsonConverter;
 import utils.PropertiesManager;
@@ -16,6 +17,7 @@ import utils.SmartLogger;
 import utils.api.Response;
 import utils.api.WebApiUtils;
 
+import java.util.List;
 
 public class TaskSourceTest extends BaseTest {
 
@@ -23,10 +25,13 @@ public class TaskSourceTest extends BaseTest {
     private final String WEB_URL = PropertiesManager.getTestDataValue(Url.WEB_URL.getUrl());
     private final String USER_NAME = PropertiesManager.getTestDataValue(TestDataVariables.USER_NAME.getVariable());
     private final String USER_PASSWORD = PropertiesManager.getTestDataValue(TestDataVariables.USER_PASSWORD.getVariable());
+    private final String PROJECT_ID = PropertiesManager.getTestDataValue(TestDataVariables.PROJECT_ID.getVariable());
+    private final String CURRENT_TESTS_PAGE = PropertiesManager.getTestDataValue(TestDataVariables.CURRENT_TESTS_PAGE.getVariable());
 
     private Response response;
     private Token token;
     private Cookie cookie;
+    private List<models.Test> tests;
 
     @Test
     public void addTest() {
@@ -48,6 +53,10 @@ public class TaskSourceTest extends BaseTest {
 
         SmartLogger.logStep(3, "Get Nexage project tests");
         ProjectsPageSteps.clickNexageLnk();
-
+        NexagePageSteps.assertIsOpenNexagePage();
+        response = WebApiUtils.getTests(PROJECT_ID);
+        tests = JsonConverter.getList(response.getBody(), models.Test.class);
+        NexagePageSteps.assertIsCorrectCurrentTestsPage(CURRENT_TESTS_PAGE);
+        NexagePageSteps.assertIsContainTests(tests);
     }
 }

@@ -2,7 +2,8 @@ package services;
 
 public enum ApiParameters {
 
-    VARIANT("variant=");
+    VARIANT("variant="),
+    PROJECT_ID("projectId=");
 
     private String parameter;
 

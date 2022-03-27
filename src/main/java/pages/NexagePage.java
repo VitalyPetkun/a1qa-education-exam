@@ -11,7 +11,50 @@ public class NexagePage extends Form {
 
     private final List<ILabel> tests = getElementFactory().findElements(By.xpath("//table[@class='table']//tr"), ElementType.LABEL);
 
+    private final ILabel currentTestsPage = getElementFactory().getLabel(By.xpath("//ul[@class='pagination']//li[@class='active']//a"),
+            "Current tests page");
+
+    private final String TD_ATTRIBUTE = ("td");
+    private final String TEST_NAME_ATTRIBUTE = String.format("//%s[1]//a", TD_ATTRIBUTE);
+    private final String METHOD_NAME_ATTRIBUTE = String.format("//%s[2]", TD_ATTRIBUTE);
+    private final String STATUS_ATTRIBUTE = String.format("//%s[3]//span", TD_ATTRIBUTE);
+    private final String START_TIME_ATTRIBUTE = String.format("//%s[4]", TD_ATTRIBUTE);
+    private final String END_TIME_ATTRIBUTE = String.format("//%s[5]", TD_ATTRIBUTE);
+    private final String DURATION_ATTRIBUTE = String.format("//%s[6]", TD_ATTRIBUTE);
+
     public NexagePage() {
         super(By.xpath("//ol[@class='breadcrumb']//li[text()='Nexage']"), "Nexage page");
+    }
+
+    public int getSizeTests() {
+        return tests.size();
+    }
+
+    public String getTestName(int index) {
+        return tests.get(index).findChildElement(By.xpath(TEST_NAME_ATTRIBUTE), ElementType.LABEL).getText();
+    }
+
+    public String getMethodName(int index) {
+        return tests.get(index).findChildElement(By.xpath(METHOD_NAME_ATTRIBUTE), ElementType.LABEL).getText();
+    }
+
+    public String getStatus(int index) {
+        return tests.get(index).findChildElement(By.xpath(STATUS_ATTRIBUTE), ElementType.LABEL).getText();
+    }
+
+    public String getStartTime(int index) {
+        return tests.get(index).findChildElement(By.xpath(START_TIME_ATTRIBUTE), ElementType.LABEL).getText();
+    }
+
+    public String getEndTime(int index) {
+        return tests.get(index).findChildElement(By.xpath(END_TIME_ATTRIBUTE), ElementType.LABEL).getText();
+    }
+
+    public String getDuration(int index) {
+        return tests.get(index).findChildElement(By.xpath(DURATION_ATTRIBUTE), ElementType.LABEL).getText();
+    }
+
+    public String getCurrentTestsPage() {
+        return currentTestsPage.getText();
     }
 }
