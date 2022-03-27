@@ -19,7 +19,7 @@ import utils.api.WebApiUtils;
 
 import java.util.List;
 
-public class TaskSourceTest extends BaseTest {
+public class UnionReportingWebTest extends BaseTest {
 
     private final String VARIANT = PropertiesManager.getTestDataValue(TestDataVariables.VARIANT.getVariable());
     private final String WEB_URL = PropertiesManager.getTestDataValue(Url.WEB_URL.getUrl());
@@ -27,6 +27,7 @@ public class TaskSourceTest extends BaseTest {
     private final String USER_PASSWORD = PropertiesManager.getTestDataValue(TestDataVariables.USER_PASSWORD.getVariable());
     private final String PROJECT_ID = PropertiesManager.getTestDataValue(TestDataVariables.PROJECT_ID.getVariable());
     private final String CURRENT_TESTS_PAGE = PropertiesManager.getTestDataValue(TestDataVariables.CURRENT_TESTS_PAGE.getVariable());
+    private final String NEW_PROJECT_NAME = PropertiesManager.getTestDataValue(TestDataVariables.NEW_PROJECT_NAME.getVariable());
 
     private Response response;
     private Token token;
@@ -42,9 +43,8 @@ public class TaskSourceTest extends BaseTest {
         Assert.assertNotNull(token.getToken(), "Token is null");
 
         SmartLogger.logStep(2, "Authorization");
-        SmartLogger.logInfo("Go projects page");
-        AqualityServices.getBrowser().goTo(AuthorizationPageSteps.getUrl(USER_NAME, USER_PASSWORD, WEB_URL));
-        ProjectsPageSteps.assertIsOpenWelcomePage();
+        AuthorizationPageSteps.authorization(USER_NAME, USER_PASSWORD, WEB_URL);
+        ProjectsPageSteps.assertIsOpenProjectsPage();
         cookie = new Cookie("token", token.getToken());
         AqualityServices.getBrowser().getDriver().manage().addCookie(cookie);
         SmartLogger.logInfo("Refresh current page");
@@ -59,5 +59,17 @@ public class TaskSourceTest extends BaseTest {
         NexagePageSteps.assertIsCorrectCurrentTestsPage(CURRENT_TESTS_PAGE);
         NexagePageSteps.assertIsSortedTestsByStartTime();
         NexagePageSteps.assertIsContainTests(tests);
+
+        SmartLogger.logStep(4, "Add new project");
+        AqualityServices.getBrowser().goBack();
+        ProjectsPageSteps.assertIsOpenProjectsPage();
+        ProjectsPageSteps.clickAddBtn();
+        ProjectsPageSteps.assertIsOpenAddProjectForm();
+        ProjectsPageSteps.addNewProject(NEW_PROJECT_NAME);
+        ProjectsPageSteps.assertIsDisplayedSuccessfulSaveMessage();
+        AqualityServices.getBrowser().getDriver().close();
+        AqualityServices.getBrowser().goTo(WEB_URL);
+        ProjectsPageSteps.assertIsCloseAddProjectForm();
+        ProjectsPageSteps.assertIsContainsProjectInPageList(NEW_PROJECT_NAME);
     }
 }

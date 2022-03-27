@@ -10,11 +10,6 @@ import java.util.List;
 
 public class NexagePage extends Form {
 
-    private final ILabel currentTestsPage = getElementFactory().getLabel(By.xpath("//ul[@class='pagination']//li[@class='active']//a"),
-            "Current tests page");
-
-    private List<ILabel> tests = new ArrayList<>();
-
     private final String TD_ATTRIBUTE = ("td");
     private final String TEST_NAME_ATTRIBUTE = String.format("//%s[1]//a", TD_ATTRIBUTE);
     private final String METHOD_NAME_ATTRIBUTE = String.format("//%s[2]", TD_ATTRIBUTE);
@@ -22,6 +17,11 @@ public class NexagePage extends Form {
     private final String START_TIME_ATTRIBUTE = String.format("//%s[4]", TD_ATTRIBUTE);
     private final String END_TIME_ATTRIBUTE = String.format("//%s[5]", TD_ATTRIBUTE);
     private final String DURATION_ATTRIBUTE = String.format("//%s[6]", TD_ATTRIBUTE);
+
+    private final ILabel currentTestsPage = getElementFactory().getLabel(By.xpath("//ul[@class='pagination']//li[@class='active']//a"),
+            "Current tests page");
+
+    private List<ILabel> tests = new ArrayList<>();
 
     public NexagePage() {
         super(By.xpath("//ol[@class='breadcrumb']//li[text()='Nexage']"), "Nexage page");

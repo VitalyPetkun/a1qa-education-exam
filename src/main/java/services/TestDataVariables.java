@@ -8,7 +8,8 @@ public enum TestDataVariables {
     PROJECT_ID("projectId"),
     CURRENT_TESTS_PAGE("currentTestsPage"),
     EXCEPTIONAL_VALUE("exceptionalValue"),
-    DATA_FORMAT_TESTS_TIME("dataFormatTestsTime");
+    DATA_FORMAT_TESTS_TIME("dataFormatTestsTime"),
+    NEW_PROJECT_NAME("newProjectName");
 
     private String variable;
 
