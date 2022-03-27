@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import services.TestDataVariables;
 import services.Url;
+import steps.AddProjectPageSteps;
 import steps.AuthorizationPageSteps;
 import steps.NexagePageSteps;
 import steps.ProjectsPageSteps;
@@ -33,25 +34,26 @@ public class UnionReportingWebTest extends BaseTest {
     private Token token;
     private Cookie cookie;
     private List<models.Test> tests;
+    private String originalWindow;
 
     @Test
     public void addTest() {
-        SmartLogger.logStep(1, "Get token");
+        SmartLogger.logStep(1, "Get token.");
         response = WebApiUtils.getToken(VARIANT);
         token = new Token(JsonConverter.getString(response.getBody()));
-        Assert.assertEquals(response.getStatus(), HttpStatus.SC_OK, "Wrong status code returned");
-        Assert.assertNotNull(token.getToken(), "Token is null");
+        Assert.assertEquals(response.getStatus(), HttpStatus.SC_OK, "Wrong status code returned.");
+        Assert.assertNotNull(token.getToken(), "Token is null.");
 
-        SmartLogger.logStep(2, "Authorization");
+        SmartLogger.logStep(2, "Authorization.");
         AuthorizationPageSteps.authorization(USER_NAME, USER_PASSWORD, WEB_URL);
         ProjectsPageSteps.assertIsOpenProjectsPage();
         cookie = new Cookie("token", token.getToken());
         AqualityServices.getBrowser().getDriver().manage().addCookie(cookie);
-        SmartLogger.logInfo("Refresh current page");
+        SmartLogger.logInfo("Refresh current page.");
         AqualityServices.getBrowser().getDriver().navigate().refresh();
         ProjectsPageSteps.assertIsCorrectVersion(VARIANT);
 
-        SmartLogger.logStep(3, "Get Nexage project tests");
+        SmartLogger.logStep(3, "Get Nexage project tests.");
         ProjectsPageSteps.clickNexageLnk();
         NexagePageSteps.assertIsOpenNexagePage();
         response = WebApiUtils.getTests(PROJECT_ID);
@@ -60,16 +62,30 @@ public class UnionReportingWebTest extends BaseTest {
         NexagePageSteps.assertIsSortedTestsByStartTime();
         NexagePageSteps.assertIsContainTests(tests);
 
-        SmartLogger.logStep(4, "Add new project");
+        SmartLogger.logStep(4, "Add new project.");
+        SmartLogger.logInfo("Go back window.");
         AqualityServices.getBrowser().goBack();
         ProjectsPageSteps.assertIsOpenProjectsPage();
+        SmartLogger.logInfo("Get handle current window.");
+        originalWindow = AqualityServices.getBrowser().getDriver().getWindowHandle();
         ProjectsPageSteps.clickAddBtn();
-        ProjectsPageSteps.assertIsOpenAddProjectForm();
-        ProjectsPageSteps.addNewProject(NEW_PROJECT_NAME);
-        ProjectsPageSteps.assertIsDisplayedSuccessfulSaveMessage();
+        SmartLogger.logInfo("Switch to other window.");
+        for (String windowHandle : AqualityServices.getBrowser().getDriver().getWindowHandles()) {
+            if(!originalWindow.contentEquals(windowHandle)) {
+                AqualityServices.getBrowser().getDriver().switchTo().window(windowHandle);
+                break;
+            }
+        }
+        AddProjectPageSteps.assertIsOpenAddProjectPage();
+        AddProjectPageSteps.addNewProject(NEW_PROJECT_NAME);
+        AddProjectPageSteps.assertIsDisplayedSuccessfulSaveMessage();
+        SmartLogger.logInfo("Close current window.");
         AqualityServices.getBrowser().getDriver().close();
-        AqualityServices.getBrowser().goTo(WEB_URL);
-        ProjectsPageSteps.assertIsCloseAddProjectForm();
+        SmartLogger.logInfo("Switch to original window.");
+        AqualityServices.getBrowser().getDriver().switchTo().window(originalWindow);
+        AddProjectPageSteps.assertIsCloseAddProjectPage();
+        SmartLogger.logInfo("Refresh current window.");
+        AqualityServices.getBrowser().getDriver().navigate().refresh();
         ProjectsPageSteps.assertIsContainsProjectInPageList(NEW_PROJECT_NAME);
     }
 }
