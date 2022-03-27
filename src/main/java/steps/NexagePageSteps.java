@@ -3,15 +3,12 @@ package steps;
 import models.Test;
 import org.testng.Assert;
 import pages.NexagePage;
-import services.TestDataVariables;
-import utils.PropertiesManager;
-import java.text.SimpleDateFormat;
+import utils.TestUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class NexagePageSteps {
-
-    private static final String EXCEPTIONAL_VALUE = PropertiesManager.getTestDataValue(TestDataVariables.EXCEPTIONAL_VALUE.getVariable());
 
     private static final NexagePage nexagePage = new NexagePage();
 
@@ -32,23 +29,17 @@ public class NexagePageSteps {
                 webTests.get(i - 1).setName(nexagePage.getTestName(i));
                 webTests.get(i - 1).setMethod(nexagePage.getMethodName(i));
                 webTests.get(i - 1).setStartTime(nexagePage.getStartTime(i));
+                webTests.get(i - 1).setEndTime(TestUtils.getCorrectEndTime(nexagePage.getEndTime(i)));
                 webTests.get(i - 1).setDuration(nexagePage.getDuration(i));
-
-                if (nexagePage.getEndTime(i).equals("")) {
-                    webTests.get(i - 1).setEndTime(null);
-                } else {
-                    webTests.get(i - 1).setEndTime(nexagePage.getEndTime(i));
-                }
-
-                if (!nexagePage.getStatus(i).equals(EXCEPTIONAL_VALUE)) {
-                    webTests.get(i - 1).setStatus(nexagePage.getStatus(i).toUpperCase());
-                } else {
-                    webTests.get(i - 1).setStatus(nexagePage.getStatus(i));
-                }
+                webTests.get(i - 1).setStatus(TestUtils.getCorrectStatus(nexagePage.getStatus(i)));
             }
         }
 
         return webTests;
+    }
+
+    public static void assertIsSortedTestsByStartTime() {
+        Assert.assertTrue(TestUtils.isSortedTestsByStartTime(getTests()), "Tests aren't sorted by date descending.");
     }
 
     public static void assertIsContainTests(List<Test> apiTests) {

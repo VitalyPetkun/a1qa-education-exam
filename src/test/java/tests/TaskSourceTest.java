@@ -57,6 +57,7 @@ public class TaskSourceTest extends BaseTest {
         response = WebApiUtils.getTests(PROJECT_ID);
         tests = JsonConverter.getList(response.getBody(), models.Test.class);
         NexagePageSteps.assertIsCorrectCurrentTestsPage(CURRENT_TESTS_PAGE);
+        NexagePageSteps.assertIsSortedTestsByStartTime();
         NexagePageSteps.assertIsContainTests(tests);
     }
 }
