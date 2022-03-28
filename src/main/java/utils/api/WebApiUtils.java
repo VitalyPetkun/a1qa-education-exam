@@ -22,8 +22,9 @@ public class WebApiUtils {
         );
     }
 
-    public static Response addTest(String projectName, String testName, String methodName, String env, String browser) {
+    public static Response addTest(String SID, String projectName, String testName, String methodName, String env, String browser) {
         return ApiUtils.doPost(TEST_PUT.getPoint().
+                concat(ApiParameters.SID.getSID(SID)).
                 concat(ApiParameters.PROJECT_NAME.getProjectName(projectName)).
                 concat(ApiParameters.TEST_NAME.getTestName(testName)).
                 concat(ApiParameters.METHOD_NAME.getMethodName(methodName)).

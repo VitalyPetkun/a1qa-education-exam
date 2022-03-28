@@ -101,4 +101,8 @@ public class Browser {
         String[] screenshotInfo = {screenshot.replaceAll("[^0-9]", ""), screenshot.split("\\.")[1]};
         return screenshotInfo;
     }
+
+    public static String getBrowserName() {
+        return getBrowser().getBrowserName().toString();
+    }
 }

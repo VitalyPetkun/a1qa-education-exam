@@ -61,5 +61,11 @@ public class TestUtils {
         return false;
     }
 
+    public static Test getTest(String name, String method) {
+        Test test = new Test();
+        test.setName(name);
+        test.setMethod(method);
 
+        return test;
+    }
 }

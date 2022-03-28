@@ -4,6 +4,7 @@ public enum ApiParameters {
 
     VARIANT("variant="),
     PROJECT_ID("projectId="),
+    SID("SID="),
     PROJECT_NAME("projectName="),
     TEST_NAME("testName="),
     METHOD_NAME("methodName="),
@@ -11,7 +12,7 @@ public enum ApiParameters {
     BROWSER("browser="),
     TEST_ID("testId="),
     CONTENT("content="),
-    CONTENT_TYPE("contentType");
+    CONTENT_TYPE("contentType=");
 
     private String parameter;
 
@@ -21,6 +22,10 @@ public enum ApiParameters {
 
     public String getVariant(String variant) {
         return parameter.concat(variant);
+    }
+
+    public String getSID(String SID) {
+        return parameter.concat(SID).concat("&");
     }
 
     public String getProjectName(String projectName) {

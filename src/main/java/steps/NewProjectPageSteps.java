@@ -17,7 +17,6 @@ public class NewProjectPageSteps {
     private NewProjectPageSteps() {
     }
 
-
     private static List<Test> getTests() {
         if (webTests.size() == 0) {
 
@@ -35,11 +34,28 @@ public class NewProjectPageSteps {
         return webTests;
     }
 
+    private static boolean isTest(Test test) {
+        boolean result = false;
+
+        for (int i = 0; i < getTests().size(); i++) {
+            if (getTests().get(i).getName().equals(test.getName()) &&
+                    getTests().get(i).getMethod().equals(test.getMethod())) {
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
     public static void assertIsContainTest(Test test) {
         Assert.assertTrue(getTests().contains(test), "Web tests don't contains api test.");
     }
 
     public static void assertIsOpenNewProjectPage() {
         Assert.assertTrue(newProjectPage.state().waitForDisplayed(), "New project page isn't open.");
+    }
+
+    public static void assertIsTest(Test test) {
+        Assert.assertTrue(isTest(test), "Test isn't in tests list.");
     }
 }

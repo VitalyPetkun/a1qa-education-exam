@@ -14,7 +14,8 @@ public enum TestDataVariables {
     BOTTOM_VALUE_ASCII_CAPITAL_LETTERS("bottomValueAsciiCapitalLetters"),
     TOP_VALUE_ASCII_CAPITAL_LETTERS("topValueAsciiCapitalLetters"),
     LENGTH_NEW_PROJECT_NAME("lengthNewProjectName"),
-    LENGTH_TEST_LOG("lengthTestLog");
+    LENGTH_TEST_LOG("lengthTestLog"),
+    LENGTH_SID("lengthSID");
 
     private String variable;
 
