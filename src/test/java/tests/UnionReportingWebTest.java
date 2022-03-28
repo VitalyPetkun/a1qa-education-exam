@@ -65,6 +65,10 @@ public class UnionReportingWebTest extends BaseTest {
         ProjectsPageSteps.assertIsOpenProjectsPage();
         originalWindow = Browser.getWindowHandle();
         addNewProject();
+
+        SmartLogger.logStep(5, "Add new test.");
+        ProjectsPageSteps.clickNewProjectLnk(NEW_PROJECT_NAME);
+        
     }
 
     private void addNewProject() {

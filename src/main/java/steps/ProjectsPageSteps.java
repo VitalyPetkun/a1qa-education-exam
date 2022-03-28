@@ -18,6 +18,10 @@ public class ProjectsPageSteps {
         projectsPage.clickNexageLnk();
     }
 
+    public static void clickNewProjectLnk(String name) {
+        projectsPage.clickNewProjectLnk(name);
+    }
+
     public static void clickAddBtn() {
         projectsPage.clickAddBtn();
     }

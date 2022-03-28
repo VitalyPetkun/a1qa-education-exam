@@ -11,6 +11,8 @@ import java.util.List;
 
 public class ProjectsPage extends Form {
 
+    private final String NEW_PROJECT_LOCATOR = "//div[@class='list-group']//a[text()='%s']";
+
     private final List<ILabel> projects = getElementFactory().findElements(By.xpath("//div[@class='list-group']//a"), ElementType.LABEL);
 
     private final ILabel version = getElementFactory().getLabel(By.xpath("//p[contains(@class,'footer')]//span"), "Version");
@@ -29,6 +31,10 @@ public class ProjectsPage extends Form {
 
     public void clickNexageLnk() {
         nexage.click();
+    }
+
+    public void clickNewProjectLnk(String name) {
+        getElementFactory().getLink(By.xpath(NEW_PROJECT_LOCATOR.concat(name)), name).click();
     }
 
     public void clickAddBtn() {
