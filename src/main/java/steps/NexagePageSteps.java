@@ -3,6 +3,7 @@ package steps;
 import models.Test;
 import org.testng.Assert;
 import pages.NexagePage;
+import utils.SmartLogger;
 import utils.TestUtils;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class NexagePageSteps {
     }
 
     private static List<Test> getTests() {
+        SmartLogger.logInfo("Get the tests list.");
         if (webTests.size() == 0) {
 
             for (int i = 1; i < nexagePage.getSizeTests(); i++) {
@@ -38,10 +40,6 @@ public class NexagePageSteps {
         return webTests;
     }
 
-    public static void assertIsSortedTestsByStartTime() {
-        Assert.assertTrue(TestUtils.isSortedTestsByStartTime(getTests()), "Tests aren't sorted by date descending.");
-    }
-
     public static void assertIsContainTests(List<Test> apiTests) {
         for (Test test : getTests()) {
             Assert.assertTrue(apiTests.contains(test), "Web tests don't contains api test.");
@@ -54,5 +52,9 @@ public class NexagePageSteps {
 
     public static void assertIsOpenNexagePage() {
         Assert.assertTrue(nexagePage.state().waitForDisplayed(), "Nexage page isn't open.");
+    }
+
+    public static void assertIsSortedTestsByStartTime() {
+        Assert.assertTrue(TestUtils.isSortedTestsByStartTime(getTests()), "Tests aren't sorted by date descending.");
     }
 }

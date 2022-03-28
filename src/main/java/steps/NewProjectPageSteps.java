@@ -3,6 +3,7 @@ package steps;
 import models.Test;
 import org.testng.Assert;
 import pages.NewProjectPage;
+import utils.SmartLogger;
 import utils.TestUtils;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class NewProjectPageSteps {
     }
 
     private static List<Test> getTests() {
+        SmartLogger.logInfo("Get the tests list.");
         if (webTests.size() == 0) {
 
             for (int i = 1; i < newProjectPage.getSizeTests(); i++) {
@@ -35,20 +37,15 @@ public class NewProjectPageSteps {
     }
 
     private static boolean isTest(Test test) {
-        boolean result = false;
-
+        SmartLogger.logInfo("Checking the test in the tests list.");
         for (int i = 0; i < getTests().size(); i++) {
             if (getTests().get(i).getName().equals(test.getName()) &&
                     getTests().get(i).getMethod().equals(test.getMethod())) {
-                result = true;
+                return true;
             }
         }
 
-        return result;
-    }
-
-    public static void assertIsContainTest(Test test) {
-        Assert.assertTrue(getTests().contains(test), "Web tests don't contains api test.");
+        return false;
     }
 
     public static void assertIsOpenNewProjectPage() {

@@ -5,7 +5,6 @@ import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.forms.Form;
 import org.openqa.selenium.By;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NewProjectPage extends Form {
@@ -18,45 +17,43 @@ public class NewProjectPage extends Form {
     private final String END_TIME_ATTRIBUTE = String.format("//%s[5]", TD_ATTRIBUTE);
     private final String DURATION_ATTRIBUTE = String.format("//%s[6]", TD_ATTRIBUTE);
 
-    private List<ILabel> tests = new ArrayList<>();
+    protected NewProjectPage(String locator, String name) {
+        super(By.xpath(locator), name);
+    }
 
     public NewProjectPage() {
         super(By.xpath("//table[@id='allTests']//div[contains(@class,'danger')]"), "New project");
     }
 
-
     private List<ILabel> getTests() {
-        if (tests.size() == 0)
-            tests = getElementFactory().findElements(By.xpath("//table[@class='table']//tr"), ElementType.LABEL);
-
-        return tests;
+        return getElementFactory().findElements(By.xpath("//table[@class='table']//tr"), ElementType.LABEL);
     }
 
-    public int getSizeTests() {
-        return getTests().size();
-    }
-
-    public String getTestName(int index) {
-        return getTests().get(index).findChildElement(By.xpath(TEST_NAME_ATTRIBUTE), ElementType.LABEL).getText();
-    }
-
-    public String getMethodName(int index) {
-        return getTests().get(index).findChildElement(By.xpath(METHOD_NAME_ATTRIBUTE), ElementType.LABEL).getText();
-    }
-
-    public String getStatus(int index) {
-        return getTests().get(index).findChildElement(By.xpath(STATUS_ATTRIBUTE), ElementType.LABEL).getText();
-    }
-
-    public String getStartTime(int index) {
-        return getTests().get(index).findChildElement(By.xpath(START_TIME_ATTRIBUTE), ElementType.LABEL).getText();
+    public String getDuration(int index) {
+        return getTests().get(index).findChildElement(By.xpath(DURATION_ATTRIBUTE), ElementType.LABEL).getText();
     }
 
     public String getEndTime(int index) {
         return getTests().get(index).findChildElement(By.xpath(END_TIME_ATTRIBUTE), ElementType.LABEL).getText();
     }
 
-    public String getDuration(int index) {
-        return getTests().get(index).findChildElement(By.xpath(DURATION_ATTRIBUTE), ElementType.LABEL).getText();
+    public String getMethodName(int index) {
+        return getTests().get(index).findChildElement(By.xpath(METHOD_NAME_ATTRIBUTE), ElementType.LABEL).getText();
+    }
+
+    public int getSizeTests() {
+        return getTests().size();
+    }
+
+    public String getStartTime(int index) {
+        return getTests().get(index).findChildElement(By.xpath(START_TIME_ATTRIBUTE), ElementType.LABEL).getText();
+    }
+
+    public String getStatus(int index) {
+        return getTests().get(index).findChildElement(By.xpath(STATUS_ATTRIBUTE), ElementType.LABEL).getText();
+    }
+
+    public String getTestName(int index) {
+        return getTests().get(index).findChildElement(By.xpath(TEST_NAME_ATTRIBUTE), ElementType.LABEL).getText();
     }
 }

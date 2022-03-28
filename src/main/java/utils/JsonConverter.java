@@ -20,11 +20,6 @@ public class JsonConverter {
         return gson;
     }
 
-    public static <T> T getObject(String jsonString, Class<T> cls) throws JsonSyntaxException {
-        SmartLogger.logInfo(String.format("Converting json string to %s", cls.getName()));
-        return getGson().fromJson(jsonString, cls);
-    }
-
     public static <T> List<T> getList(String jsonString, Class<T> cls) {
         SmartLogger.logInfo(String.format("Converting json String to List<%s>", cls.getName()));
         List<T> list = new ArrayList<>();
@@ -35,6 +30,11 @@ public class JsonConverter {
         }
 
         return list;
+    }
+
+    public static <T> T getObject(String jsonString, Class<T> cls) throws JsonSyntaxException {
+        SmartLogger.logInfo(String.format("Converting json string to %s", cls.getName()));
+        return getGson().fromJson(jsonString, cls);
     }
 
     public static String getString(Object object) {
@@ -54,5 +54,19 @@ public class JsonConverter {
         }
 
         Assert.assertTrue(actualResult, "Response isn't json array format.");
+    }
+
+    public static void assertIsJsonElementFormatResponse(String response) {
+        boolean actualResult;
+
+        try {
+            JsonConverter.getObject(response, JsonElement.class);
+            actualResult = true;
+        } catch (JsonSyntaxException exception) {
+            SmartLogger.logError("Can't converting response to json element.");
+            actualResult = false;
+        }
+
+        Assert.assertTrue(actualResult, "Response isn't json element format.");
     }
 }

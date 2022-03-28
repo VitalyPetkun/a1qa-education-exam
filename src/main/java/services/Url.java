@@ -2,8 +2,8 @@ package services;
 
 public enum Url {
 
-    HTTP("http"),
     API_URL("apiUrl"),
+    HTTP("http"),
     WEB_URL("webUrl");
 
     private String url;

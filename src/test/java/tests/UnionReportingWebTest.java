@@ -1,7 +1,6 @@
 package tests;
 
 import browser.Browser;
-import models.Token;
 import org.apache.http.HttpStatus;
 import org.openqa.selenium.Cookie;
 import org.testng.Assert;
@@ -26,60 +25,60 @@ public class UnionReportingWebTest extends BaseTest {
     private final int LENGTH_TEST_LOG = Integer.parseInt(PropertiesManager.
             getTestDataValue(TestDataVariables.LENGTH_TEST_LOG.getVariable()));
 
-    private final String VARIANT = PropertiesManager.getTestDataValue(TestDataVariables.VARIANT.getVariable());
-    private final String WEB_URL = PropertiesManager.getTestDataValue(Url.WEB_URL.getUrl());
-    private final String USER_NAME = PropertiesManager.getTestDataValue(TestDataVariables.USER_NAME.getVariable());
-    private final String USER_PASSWORD = PropertiesManager.getTestDataValue(TestDataVariables.USER_PASSWORD.getVariable());
-    private final String PROJECT_ID = PropertiesManager.getTestDataValue(TestDataVariables.PROJECT_ID.getVariable());
-    private final String CURRENT_TESTS_PAGE = PropertiesManager.getTestDataValue(TestDataVariables.CURRENT_TESTS_PAGE.getVariable());
-    private final String ENV = System.getenv().get(PropertiesManager.getConfigValue(ConfigVariables.ENV.getVariable()));
     private final String BROWSER_NAME = Browser.getBrowserName();
     private final String CURRENT_TEST_NAME = this.getClass().getName();
+    private final String CURRENT_TESTS_PAGE = PropertiesManager.getTestDataValue(TestDataVariables.CURRENT_TESTS_PAGE.getVariable());
+    private final String ENV = System.getenv().get(PropertiesManager.getConfigValue(ConfigVariables.ENV.getVariable()));
+    private final String PROJECT_ID = PropertiesManager.getTestDataValue(TestDataVariables.PROJECT_ID.getVariable());
+    private final String USER_NAME = PropertiesManager.getConfigValue(ConfigVariables.USER_NAME.getVariable());
+    private final String USER_PASSWORD = PropertiesManager.getConfigValue(ConfigVariables.USER_PASSWORD.getVariable());
+    private final String VARIANT = PropertiesManager.getTestDataValue(TestDataVariables.VARIANT.getVariable());
+    private final String WEB_URL = PropertiesManager.getConfigValue(Url.WEB_URL.getUrl());
 
     private String currentMethodName;
     private String newProjectName;
     private String originalWindow;
     private String testId;
     private String testLog;
+    private String token;
 
     private Cookie cookie;
     private Response response;
     private models.Test test;
-    private Token token;
 
     private List<models.Test> tests;
 
     @Test
     public void addTest() {
-        SmartLogger.logInfo("Get current method name.");
-        currentMethodName =  this.getClass().getMethods()[0].getName();
-
         SmartLogger.logStep(1, "Get token.");
         response = WebApiUtils.getToken(VARIANT);
-        token = new Token(JsonConverter.getString(response.getBody()));
+        JsonConverter.assertIsJsonElementFormatResponse(response.getBody());
+        token = JsonConverter.getString(response.getBody());
         Assert.assertEquals(response.getStatus(), HttpStatus.SC_OK, "Wrong status code returned.");
-        Assert.assertNotNull(token.getToken(), "Token is null.");
+        Assert.assertNotNull(token, "Token is null.");
 
         SmartLogger.logStep(2, "Authorization.");
         Browser.goToAuthorization(USER_NAME, USER_PASSWORD, WEB_URL);
-        ProjectsPageSteps.assertIsOpenProjectsPage();
-        cookie = new Cookie("token", token.getToken());
+        cookie = new Cookie("token", token);
         Browser.addCookie(cookie);
         Browser.refresh();
+        ProjectsPageSteps.assertIsOpenProjectsPage();
         ProjectsPageSteps.assertIsCorrectVersion(VARIANT);
 
         SmartLogger.logStep(3, "Get Nexage project tests.");
         ProjectsPageSteps.clickNexageLnk();
-        NexagePageSteps.assertIsOpenNexagePage();
         response = WebApiUtils.getTests(PROJECT_ID);
         JsonConverter.assertIsJsonArrayFormatResponse(response.getBody());
         tests = JsonConverter.getList(response.getBody(), models.Test.class);
+        NexagePageSteps.assertIsOpenNexagePage();
         NexagePageSteps.assertIsCorrectCurrentTestsPage(CURRENT_TESTS_PAGE);
         NexagePageSteps.assertIsSortedTestsByStartTime();
         NexagePageSteps.assertIsContainTests(tests);
 
+        SmartLogger.logInfo("Get new project name.");
+        newProjectName = StringUtils.generateRandomString(LENGTH_NEW_PROJECT_NAME);
+
         SmartLogger.logStep(4, "Add new project.");
-        newProjectName =  StringUtils.generateRandomString(LENGTH_NEW_PROJECT_NAME);
         Browser.goBack();
         ProjectsPageSteps.assertIsOpenProjectsPage();
         originalWindow = Browser.getWindowHandle();
@@ -94,16 +93,21 @@ public class UnionReportingWebTest extends BaseTest {
         Browser.refresh();
         ProjectsPageSteps.assertIsContainsProjectInPageList(newProjectName);
 
-        SmartLogger.logStep(5, "Add new test.");
+        SmartLogger.logInfo("Get test log.");
         testLog = StringUtils.generateRandomString(LENGTH_TEST_LOG);
+
+        SmartLogger.logInfo("Get current method name.");
+        currentMethodName = this.getClass().getMethods()[0].getName();
+
+        SmartLogger.logStep(5, "Add new test.");
         ProjectsPageSteps.clickNewProjectLnk(newProjectName);
         NewProjectPageSteps.assertIsOpenNewProjectPage();
-        String[] screenshotInfo = Browser.takeScreenshot();
         response = WebApiUtils.addTest(SID, newProjectName, CURRENT_TEST_NAME, currentMethodName, ENV, BROWSER_NAME);
         testId = response.getBody();
         WebApiUtils.putLog(testId, testLog);
+        String[] screenshotInfo = Browser.takeScreenshot();
         WebApiUtils.putAttachment(testId, screenshotInfo[0], screenshotInfo[1]);
-        test = TestUtils.getTest(CURRENT_TEST_NAME, currentMethodName);
+        test = new models.Test(CURRENT_TEST_NAME, currentMethodName);
         NewProjectPageSteps.assertIsTest(test);
     }
 }

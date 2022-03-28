@@ -2,20 +2,17 @@ package services;
 
 public enum TestDataVariables {
 
-    VARIANT("variant"),
-    USER_NAME("userName"),
-    USER_PASSWORD("userPassword"),
-    PROJECT_ID("projectId"),
-    CURRENT_TESTS_PAGE("currentTestsPage"),
-    EXCEPTIONAL_VALUE("exceptionalValue"),
-    DATA_FORMAT_TESTS_TIME("dataFormatTestsTime"),
     BOTTOM_VALUE_ASCII_LOWER_CASE("bottomValueAsciiLowerCase"),
-    TOP_VALUE_ASCII_LOWER_CASE("topValueAsciiLowerCase"),
     BOTTOM_VALUE_ASCII_CAPITAL_LETTERS("bottomValueAsciiCapitalLetters"),
-    TOP_VALUE_ASCII_CAPITAL_LETTERS("topValueAsciiCapitalLetters"),
+    CURRENT_TESTS_PAGE("currentTestsPage"),
+    EXCEPTIONAL_STATUS_VALUE("exceptionalStatusValue"),
     LENGTH_NEW_PROJECT_NAME("lengthNewProjectName"),
+    LENGTH_SID("lengthSID"),
     LENGTH_TEST_LOG("lengthTestLog"),
-    LENGTH_SID("lengthSID");
+    PROJECT_ID("projectId"),
+    TOP_VALUE_ASCII_LOWER_CASE("topValueAsciiLowerCase"),
+    TOP_VALUE_ASCII_CAPITAL_LETTERS("topValueAsciiCapitalLetters"),
+    VARIANT("variant");
 
     private String variable;
 

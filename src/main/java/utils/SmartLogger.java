@@ -17,15 +17,15 @@ public class SmartLogger {
         return logger;
     }
 
+    public static void logError(String message) {
+        getLogger().error(message);
+    }
+
     public static void logInfo(String message) {
         getLogger().info(message);
     }
 
     public static void logStep(int stepNumber, String message) {
         getLogger().info(String.format("STEP №%d: %s", stepNumber, message));
-    }
-
-    public static void logError(String message) {
-        getLogger().error(message);
     }
 }

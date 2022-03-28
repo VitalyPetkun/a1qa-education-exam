@@ -11,4 +11,11 @@ public class Test {
     private String startTime;
     private String endTime;
     private String status;
+
+    public Test () {}
+
+    public Test(String name, String method) {
+        this.name = name;
+        this.method = method;
+    }
 }

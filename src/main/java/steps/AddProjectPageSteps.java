@@ -10,17 +10,21 @@ public class AddProjectPageSteps {
     private AddProjectPageSteps() {
     }
 
-    private static void inputProjectNameTxt(String name) {
-        addProjectPage.inputProjectNameTxt(name);
-    }
-
     private static void clickSaveProjectBtn() {
         addProjectPage.clickSaveProjectBtn();
+    }
+
+    private static void inputProjectNameTxt(String name) {
+        addProjectPage.inputProjectNameTxt(name);
     }
 
     public static void addNewProject(String name) {
         inputProjectNameTxt(name);
         clickSaveProjectBtn();
+    }
+
+    public static void assertIsCloseAddProjectPage() {
+        Assert.assertFalse(addProjectPage.state().isDisplayed(), "Add project form isn't close.");
     }
 
     public static void assertIsDisplayedSuccessfulSaveMessage() {
@@ -29,9 +33,5 @@ public class AddProjectPageSteps {
 
     public static void assertIsOpenAddProjectPage() {
         Assert.assertTrue(addProjectPage.state().isDisplayed(), "Add project form isn't open.");
-    }
-
-    public static void assertIsCloseAddProjectPage() {
-        Assert.assertFalse(addProjectPage.state().isDisplayed(), "Add project form isn't close.");
     }
 }

@@ -1,6 +1,7 @@
 package utils;
 
 import models.Test;
+import services.ConfigVariables;
 import services.TestDataVariables;
 
 import java.text.ParseException;
@@ -10,15 +11,12 @@ import java.util.List;
 
 public class TestUtils {
 
-    private static final String EXCEPTIONAL_VALUE = PropertiesManager.getTestDataValue(TestDataVariables.EXCEPTIONAL_VALUE.getVariable());
-    private static final String DATA_FORMAT_TESTS_TIME = PropertiesManager.getTestDataValue(TestDataVariables.DATA_FORMAT_TESTS_TIME.getVariable());
+    private static final String DATA_FORMAT_TESTS_TIME = PropertiesManager.
+            getConfigValue(ConfigVariables.DATA_FORMAT_TESTS_TIME.getVariable());
+    private static final String EXCEPTIONAL_STATUS_VALUE = PropertiesManager.
+            getTestDataValue(TestDataVariables.EXCEPTIONAL_STATUS_VALUE.getVariable());
 
     private static final SimpleDateFormat formatter = new SimpleDateFormat(DATA_FORMAT_TESTS_TIME);
-
-    private static Date date;
-
-    private static long firstTestTime = 0;
-    private static long secondTestTime = 0;
 
     private TestUtils() {
     }
@@ -32,7 +30,7 @@ public class TestUtils {
     }
 
     public static String getCorrectStatus(String status) {
-        if (!status.equals(EXCEPTIONAL_VALUE)) {
+        if (!status.equals(EXCEPTIONAL_STATUS_VALUE)) {
             return status.toUpperCase();
         } else {
             return status;
@@ -41,6 +39,11 @@ public class TestUtils {
 
     public static boolean isSortedTestsByStartTime(List<Test> tests) {
         SmartLogger.logInfo("Checking the sorting of tests dates in descending order.");
+        Date date;
+
+        long firstTestTime = 0;
+        long secondTestTime = 0;
+
         for (int i = 0; i < tests.size() - 1; i++) {
             try {
                 date = formatter.parse(tests.get(i).getStartTime());
@@ -59,13 +62,5 @@ public class TestUtils {
         }
 
         return false;
-    }
-
-    public static Test getTest(String name, String method) {
-        Test test = new Test();
-        test.setName(name);
-        test.setMethod(method);
-
-        return test;
     }
 }

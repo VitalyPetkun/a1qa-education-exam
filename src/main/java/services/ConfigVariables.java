@@ -2,7 +2,11 @@ package services;
 
 public enum ConfigVariables {
 
-    ENV("env");
+    DATA_FORMAT_TESTS_TIME("dataFormatTestsTime"),
+    ENV("env"),
+    TIME_ZONE("timeZone"),
+    USER_NAME("userName"),
+    USER_PASSWORD("userPassword");
 
     private String variable;
 

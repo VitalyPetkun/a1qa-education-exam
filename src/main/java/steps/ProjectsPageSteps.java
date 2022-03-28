@@ -14,16 +14,16 @@ public class ProjectsPageSteps {
         return projectsPage.getVersionText().replaceAll("[^0-9]", "");
     }
 
+    public static void clickAddBtn() {
+        projectsPage.clickAddBtn();
+    }
+
     public static void clickNexageLnk() {
         projectsPage.clickNexageLnk();
     }
 
     public static void clickNewProjectLnk(String name) {
         projectsPage.clickNewProjectLnk(name);
-    }
-
-    public static void clickAddBtn() {
-        projectsPage.clickAddBtn();
     }
 
     public static boolean isContainsProject(String name) {

@@ -2,53 +2,29 @@ package services;
 
 public enum ApiParameters {
 
-    VARIANT("variant="),
-    PROJECT_ID("projectId="),
-    SID("SID="),
-    PROJECT_NAME("projectName="),
-    TEST_NAME("testName="),
-    METHOD_NAME("methodName="),
-    ENV("env="),
     BROWSER("browser="),
-    TEST_ID("testId="),
     CONTENT("content="),
-    CONTENT_TYPE("contentType=");
+    CONTENT_TYPE("contentType="),
+    ENV("env="),
+    METHOD_NAME("methodName="),
+    PROJECT_ID("projectId="),
+    PROJECT_NAME("projectName="),
+    SID("SID="),
+    TEST_ID("testId="),
+    TEST_NAME("testName="),
+    VARIANT("variant=");
 
-    private String parameter;
+    private String parameterName;
 
-    ApiParameters(String parameter) {
-        this.parameter = parameter;
+    ApiParameters(String parameterName) {
+        this.parameterName = parameterName;
     }
 
-    public String getVariant(String variant) {
-        return parameter.concat(variant);
+    public String getLastParameter(String parameterValue) {
+        return parameterName.concat(parameterValue);
     }
 
-    public String getSID(String SID) {
-        return parameter.concat(SID).concat("&");
-    }
-
-    public String getProjectName(String projectName) {
-        return parameter.concat(projectName).concat("&");
-    }
-
-    public String getTestName(String testName) {
-        return parameter.concat(testName).concat("&");
-    }
-
-    public String getMethodName(String methodName) {
-        return parameter.concat(methodName).concat("&");
-    }
-
-    public String getEnv(String env) {
-        return parameter.concat(env).concat("&");
-    }
-
-    public String getTestId(String testId) {
-        return parameter.concat(testId).concat("&");
-    }
-
-    public String getContentType(String contentType) {
-        return parameter.concat(contentType).concat("&");
+    public String getMiddleParameter(String parameterValue) {
+        return parameterName.concat(parameterValue).concat("&");
     }
 }
