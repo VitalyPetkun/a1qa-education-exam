@@ -2,11 +2,14 @@ package browser;
 
 import aquality.selenium.browser.AqualityServices;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import services.Url;
 import utils.PropertiesManager;
 import utils.SmartLogger;
 
+import java.io.File;
 import java.util.Set;
 
 public class Browser {
@@ -90,5 +93,12 @@ public class Browser {
     public static void quit() {
         SmartLogger.logInfo("Quit browser.");
         getDriver().quit();
+    }
+
+    public static String[] takeScreenshot() {
+        SmartLogger.logInfo("Get info screenshot {base64, format}.");
+        String screenshot = ((TakesScreenshot)getDriver()).getScreenshotAs(OutputType.FILE).toString();
+        String[] screenshotInfo = {screenshot.replaceAll("[^0-9]", ""), screenshot.split("\\.")[1]};
+        return screenshotInfo;
     }
 }

@@ -1,6 +1,7 @@
 package tests;
 
 import browser.Browser;
+import models.NewTest;
 import models.Token;
 import org.apache.http.HttpStatus;
 import org.openqa.selenium.Cookie;
@@ -9,11 +10,13 @@ import org.testng.annotations.Test;
 import services.TestDataVariables;
 import services.Url;
 import steps.AddProjectPageSteps;
+import steps.NewProjectPageSteps;
 import steps.NexagePageSteps;
 import steps.ProjectsPageSteps;
 import utils.JsonConverter;
 import utils.PropertiesManager;
 import utils.SmartLogger;
+import utils.StringUtils;
 import utils.api.Response;
 import utils.api.WebApiUtils;
 
@@ -21,19 +24,28 @@ import java.util.List;
 
 public class UnionReportingWebTest extends BaseTest {
 
+    private final int LENGTH_NEW_PROJECT_NAME = Integer.parseInt(PropertiesManager.
+            getTestDataValue(TestDataVariables.LENGTH_NEW_PROJECT_NAME.getVariable()));
+    private final int LENGTH_TEST_LOG = Integer.parseInt(PropertiesManager.
+            getTestDataValue(TestDataVariables.LENGTH_TEST_LOG.getVariable()));
+
     private final String VARIANT = PropertiesManager.getTestDataValue(TestDataVariables.VARIANT.getVariable());
     private final String WEB_URL = PropertiesManager.getTestDataValue(Url.WEB_URL.getUrl());
     private final String USER_NAME = PropertiesManager.getTestDataValue(TestDataVariables.USER_NAME.getVariable());
     private final String USER_PASSWORD = PropertiesManager.getTestDataValue(TestDataVariables.USER_PASSWORD.getVariable());
     private final String PROJECT_ID = PropertiesManager.getTestDataValue(TestDataVariables.PROJECT_ID.getVariable());
     private final String CURRENT_TESTS_PAGE = PropertiesManager.getTestDataValue(TestDataVariables.CURRENT_TESTS_PAGE.getVariable());
-    private final String NEW_PROJECT_NAME = PropertiesManager.getTestDataValue(TestDataVariables.NEW_PROJECT_NAME.getVariable());
 
+    private String newProjectName;
+    private String originalWindow;
+    private String testLog;
+
+    private Cookie cookie;
+    private NewTest newTest;
     private Response response;
     private Token token;
-    private Cookie cookie;
+
     private List<models.Test> tests;
-    private String originalWindow;
 
     @Test
     public void addTest() {
@@ -55,34 +67,32 @@ public class UnionReportingWebTest extends BaseTest {
         ProjectsPageSteps.clickNexageLnk();
         NexagePageSteps.assertIsOpenNexagePage();
         response = WebApiUtils.getTests(PROJECT_ID);
+        JsonConverter.assertIsJsonArrayFormatResponse(response.getBody());
         tests = JsonConverter.getList(response.getBody(), models.Test.class);
         NexagePageSteps.assertIsCorrectCurrentTestsPage(CURRENT_TESTS_PAGE);
         NexagePageSteps.assertIsSortedTestsByStartTime();
         NexagePageSteps.assertIsContainTests(tests);
 
         SmartLogger.logStep(4, "Add new project.");
+        newProjectName =  StringUtils.generateRandomString(LENGTH_NEW_PROJECT_NAME);
         Browser.goBack();
         ProjectsPageSteps.assertIsOpenProjectsPage();
         originalWindow = Browser.getWindowHandle();
-        addNewProject();
+        ProjectsPageSteps.clickAddBtn();
+        Browser.switchToOtherWindow(originalWindow);
+        AddProjectPageSteps.assertIsOpenAddProjectPage();
+        AddProjectPageSteps.addNewProject(newProjectName);
+        AddProjectPageSteps.assertIsDisplayedSuccessfulSaveMessage();
+        Browser.close();
+        Browser.switchTo(originalWindow);
+        AddProjectPageSteps.assertIsCloseAddProjectPage();
+        Browser.refresh();
+        ProjectsPageSteps.assertIsContainsProjectInPageList(newProjectName);
 
         SmartLogger.logStep(5, "Add new test.");
-        ProjectsPageSteps.clickNewProjectLnk(NEW_PROJECT_NAME);
-        
-    }
-
-    private void addNewProject() {
-        if(!ProjectsPageSteps.isContainsProject(NEW_PROJECT_NAME)) {
-            ProjectsPageSteps.clickAddBtn();
-            Browser.switchToOtherWindow(originalWindow);
-            AddProjectPageSteps.assertIsOpenAddProjectPage();
-            AddProjectPageSteps.addNewProject(NEW_PROJECT_NAME);
-            AddProjectPageSteps.assertIsDisplayedSuccessfulSaveMessage();
-            Browser.close();
-            Browser.switchTo(originalWindow);
-            AddProjectPageSteps.assertIsCloseAddProjectPage();
-            Browser.refresh();
-            ProjectsPageSteps.assertIsContainsProjectInPageList(NEW_PROJECT_NAME);
-        }
+        testLog = StringUtils.generateRandomString(LENGTH_TEST_LOG);
+        ProjectsPageSteps.clickNewProjectLnk(newProjectName);
+        String[] screenshotInfo = Browser.takeScreenshot();
+        Browser.close();
     }
 }

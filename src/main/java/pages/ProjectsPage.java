@@ -34,7 +34,7 @@ public class ProjectsPage extends Form {
     }
 
     public void clickNewProjectLnk(String name) {
-        getElementFactory().getLink(By.xpath(NEW_PROJECT_LOCATOR.concat(name)), name).click();
+        getElementFactory().getLink(By.xpath(String.format(NEW_PROJECT_LOCATOR, name)), name).click();
     }
 
     public void clickAddBtn() {

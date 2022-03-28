@@ -27,7 +27,7 @@ public class ProjectsPageSteps {
     }
 
     public static boolean isContainsProject(String name) {
-        for (int i = 1; i < projectsPage.getSizeProjects(); i++) {
+        for (int i = 0; i < projectsPage.getSizeProjects(); i++) {
             if (projectsPage.getNameProject(i).equals(name))
                 return true;
         }
@@ -36,7 +36,7 @@ public class ProjectsPageSteps {
     }
 
     public static void assertIsContainsProjectInPageList(String name) {
-        Assert.assertTrue(isContainsProject(name), "Project %s don't contains in page list".concat(name));
+        Assert.assertTrue(isContainsProject(name), String.format("Project %s don't contains in page list", name));
     }
 
     public static void assertIsCorrectVersion(String version) {
