@@ -11,13 +11,18 @@ import utils.api.ApiUtils;
 
 import java.util.TimeZone;
 
+import static services.Paths.*;
+import static services.ProjectFiles.*;
+
 public class BaseTest {
 
     private final int LENGTH_SID = Integer.parseInt(PropertiesManager.
-            getTestDataValue(TestDataVariables.LENGTH_SID.getVariable()));
+            getValue(TEST_RESOURCES_PATH.getPath(), TEST_DATA.getFile(), TestDataVariables.LENGTH_SID.getVariable()));
 
-    private final String API_URI = PropertiesManager.getConfigValue(Url.API_URL.getUrl());
-    private final String TIME_ZONE = PropertiesManager.getConfigValue(ConfigVariables.TIME_ZONE.getVariable());
+    private final String API_URI = PropertiesManager.
+            getValue(MAIN_RESOURCES_PATH.getPath(), CONFIG.getFile(), Url.API_URL.getUrl());
+    private final String TIME_ZONE = PropertiesManager.
+            getValue(MAIN_RESOURCES_PATH.getPath(), CONFIG.getFile(), ConfigVariables.TIME_ZONE.getVariable());
     protected final String SID = StringUtils.generateRandomString(LENGTH_SID);
 
     @BeforeMethod

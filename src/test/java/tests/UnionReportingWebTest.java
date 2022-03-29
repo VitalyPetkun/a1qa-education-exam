@@ -18,22 +18,32 @@ import utils.api.WebApiUtils;
 
 import java.util.List;
 
+import static services.Paths.*;
+import static services.ProjectFiles.*;
+
 public class UnionReportingWebTest extends BaseTest {
 
     private final int LENGTH_NEW_PROJECT_NAME = Integer.parseInt(PropertiesManager.
-            getTestDataValue(TestDataVariables.LENGTH_NEW_PROJECT_NAME.getVariable()));
+            getValue(TEST_RESOURCES_PATH.getPath(), TEST_DATA.getFile(), TestDataVariables.LENGTH_NEW_PROJECT_NAME.getVariable()));
     private final int LENGTH_TEST_LOG = Integer.parseInt(PropertiesManager.
-            getTestDataValue(TestDataVariables.LENGTH_TEST_LOG.getVariable()));
+            getValue(TEST_RESOURCES_PATH.getPath(), TEST_DATA.getFile(), TestDataVariables.LENGTH_TEST_LOG.getVariable()));
 
     private final String BROWSER_NAME = Browser.getBrowserName();
     private final String CURRENT_TEST_NAME = this.getClass().getName();
-    private final String CURRENT_TESTS_PAGE = PropertiesManager.getTestDataValue(TestDataVariables.CURRENT_TESTS_PAGE.getVariable());
-    private final String ENV = System.getenv().get(PropertiesManager.getConfigValue(ConfigVariables.ENV.getVariable()));
-    private final String PROJECT_ID = PropertiesManager.getTestDataValue(TestDataVariables.PROJECT_ID.getVariable());
-    private final String USER_NAME = PropertiesManager.getConfigValue(ConfigVariables.USER_NAME.getVariable());
-    private final String USER_PASSWORD = PropertiesManager.getConfigValue(ConfigVariables.USER_PASSWORD.getVariable());
-    private final String VARIANT = PropertiesManager.getTestDataValue(TestDataVariables.VARIANT.getVariable());
-    private final String WEB_URL = PropertiesManager.getConfigValue(Url.WEB_URL.getUrl());
+    private final String CURRENT_TESTS_PAGE = PropertiesManager.
+            getValue(TEST_RESOURCES_PATH.getPath(), TEST_DATA.getFile(), TestDataVariables.CURRENT_TESTS_PAGE.getVariable());
+    private final String ENV = System.getenv().get(PropertiesManager.
+            getValue(MAIN_RESOURCES_PATH.getPath(), CONFIG.getFile(), ConfigVariables.ENV.getVariable()));
+    private final String PROJECT_ID = PropertiesManager.
+            getValue(TEST_RESOURCES_PATH.getPath(), TEST_DATA.getFile(), TestDataVariables.PROJECT_ID.getVariable());
+    private final String USER_NAME = PropertiesManager.
+            getValue(MAIN_RESOURCES_PATH.getPath(), CONFIG.getFile(), ConfigVariables.USER_NAME.getVariable());
+    private final String USER_PASSWORD = PropertiesManager.
+            getValue(MAIN_RESOURCES_PATH.getPath(), CONFIG.getFile(), ConfigVariables.USER_PASSWORD.getVariable());
+    private final String VARIANT = PropertiesManager.
+            getValue(TEST_RESOURCES_PATH.getPath(), TEST_DATA.getFile(), TestDataVariables.VARIANT.getVariable());
+    private final String WEB_URL = PropertiesManager.
+            getValue(MAIN_RESOURCES_PATH.getPath(), CONFIG.getFile(), Url.WEB_URL.getUrl());
 
     private String currentMethodName;
     private String newProjectName;

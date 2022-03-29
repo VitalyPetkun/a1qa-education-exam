@@ -9,12 +9,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static services.Paths.*;
+import static services.ProjectFiles.*;
+
 public class TestUtils {
 
     private static final String DATA_FORMAT_TESTS_TIME = PropertiesManager.
-            getConfigValue(ConfigVariables.DATA_FORMAT_TESTS_TIME.getVariable());
+            getValue(MAIN_RESOURCES_PATH.getPath(), CONFIG.getFile(), ConfigVariables.DATA_FORMAT_TESTS_TIME.getVariable());
     private static final String EXCEPTIONAL_STATUS_VALUE = PropertiesManager.
-            getTestDataValue(TestDataVariables.EXCEPTIONAL_STATUS_VALUE.getVariable());
+            getValue(TEST_RESOURCES_PATH.getPath(), TEST_DATA.getFile(), TestDataVariables.EXCEPTIONAL_STATUS_VALUE.getVariable());
 
     private static final SimpleDateFormat formatter = new SimpleDateFormat(DATA_FORMAT_TESTS_TIME);
 

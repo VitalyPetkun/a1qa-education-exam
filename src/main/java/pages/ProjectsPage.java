@@ -12,7 +12,7 @@ import java.util.List;
 public class ProjectsPage extends Form {
 
     private final String NEW_PROJECT_LOCATOR = "//div[@class='list-group']//a[text()='%s']";
-    private final String PROJECTS_PAGE_LOCATOR = "//div[@class='list-group']";
+    private static final String PROJECTS_PAGE_LOCATOR = "//div[@class='list-group']";
     private final String PROJECTS_LIST_LOCATOR = String.format("%s//a", PROJECTS_PAGE_LOCATOR);
 
     private final IButton add = getElementFactory().getButton(By.xpath("//div[@class='panel-heading']//a"), "Add");

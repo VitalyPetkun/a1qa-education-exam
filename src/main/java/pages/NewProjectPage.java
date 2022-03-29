@@ -9,7 +9,7 @@ import java.util.List;
 
 public class NewProjectPage extends Form {
 
-    private final String NEW_PROJECT_PAGE_LOCATOR = "//table[@id='allTests']//div[contains(@class,'danger')]";
+    private static final String NEW_PROJECT_PAGE_LOCATOR = "//table[@id='allTests']//div[contains(@class,'danger')]";
     private final String TESTS_LIST_LOCATOR = "//table[@class='table']//tr";
     private final String TD_ATTRIBUTE = ("td");
     private final String TEST_NAME_ATTRIBUTE = String.format("//%s[1]//a", TD_ATTRIBUTE);

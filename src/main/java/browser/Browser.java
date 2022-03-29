@@ -12,6 +12,9 @@ import utils.StringUtils;
 
 import java.util.Set;
 
+import static services.Paths.*;
+import static services.ProjectFiles.*;
+
 public class Browser {
 
     private Browser() {
@@ -61,7 +64,7 @@ public class Browser {
     }
 
     public static void goToAuthorization(String userName, String userPassword, String url) {
-        String currentUrl = PropertiesManager.getConfigValue(Url.HTTP.getUrl()).
+        String currentUrl = PropertiesManager.getValue(MAIN_RESOURCES_PATH.getPath(), CONFIG.getFile(), Url.HTTP.getUrl()).
                 concat(userName).concat(":").concat(userPassword).concat("@").concat(url);
         Browser.goTo(currentUrl);
     }

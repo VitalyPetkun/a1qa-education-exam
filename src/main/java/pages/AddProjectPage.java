@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 
 public class AddProjectPage extends Form {
 
-    private final String ADD_PROJECT_PAGE_LOCATOR = "//form[@id='addProjectForm']";
+    private static final String ADD_PROJECT_PAGE_LOCATOR = "//form[@id='addProjectForm']";
 
     private final IButton saveProject = getElementFactory().getButton(By.xpath("//button[@type='submit']"),
             "Save project");
