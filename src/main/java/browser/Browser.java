@@ -8,6 +8,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import services.Url;
 import utils.PropertiesManager;
 import utils.SmartLogger;
+import utils.StringUtils;
 
 import java.util.Set;
 
@@ -97,7 +98,7 @@ public class Browser {
     public static String[] takeScreenshot() {
         SmartLogger.logInfo("Get info screenshot {base64, format}.");
         String screenshot = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE).toString();
-        String[] screenshotInfo = {screenshot.replaceAll("[^0-9]", ""), screenshot.split("\\.")[1]};
+        String[] screenshotInfo = {StringUtils.deleteAllExceptNumbers(screenshot), screenshot.split("\\.")[1]};
         return screenshotInfo;
     }
 

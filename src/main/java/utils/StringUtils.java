@@ -16,6 +16,10 @@ public class StringUtils {
     private StringUtils() {
     }
 
+    public static String deleteAllExceptNumbers(String string) {
+        return string.replaceAll("[^0-9]", "");
+    }
+
     public static String generateRandomString(int length) {
         SmartLogger.logInfo("Generate a random string.");
         String random = String.valueOf(Character.toChars((int) (Math.random()

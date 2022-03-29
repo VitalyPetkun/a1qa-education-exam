@@ -11,20 +11,22 @@ import java.util.List;
 
 public class ProjectsPage extends Form {
 
+    private final String NEW_PROJECT_LOCATOR = "//div[@class='list-group']//a[text()='%s']";
+    private final String PROJECTS_PAGE_LOCATOR = "//div[@class='list-group']";
+    private final String PROJECTS_LIST_LOCATOR = String.format("%s//a", PROJECTS_PAGE_LOCATOR);
+
     private final IButton add = getElementFactory().getButton(By.xpath("//div[@class='panel-heading']//a"), "Add");
 
     private final ILabel version = getElementFactory().getLabel(By.xpath("//p[contains(@class,'footer')]//span"), "Version");
 
     private final ILink nexage = getElementFactory().getLink(By.xpath("//div[@class='list-group']//a[text()='Nexage']"), "Nexage");
 
-    private final String NEW_PROJECT_LOCATOR = "//div[@class='list-group']//a[text()='%s']";
-
     public ProjectsPage() {
-        super(By.xpath("//div[@class='list-group']"), "Projects page");
+        super(By.xpath(PROJECTS_PAGE_LOCATOR), "Projects page");
     }
 
     private List<ILabel> getProjects() {
-        return getElementFactory().findElements(By.xpath("//div[@class='list-group']//a"), ElementType.LABEL);
+        return getElementFactory().findElements(By.xpath(PROJECTS_LIST_LOCATOR), ElementType.LABEL);
     }
 
     public void clickAddBtn() {

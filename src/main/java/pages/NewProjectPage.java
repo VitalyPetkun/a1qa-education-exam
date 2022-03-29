@@ -9,6 +9,8 @@ import java.util.List;
 
 public class NewProjectPage extends Form {
 
+    private final String NEW_PROJECT_PAGE_LOCATOR = "//table[@id='allTests']//div[contains(@class,'danger')]";
+    private final String TESTS_LIST_LOCATOR = "//table[@class='table']//tr";
     private final String TD_ATTRIBUTE = ("td");
     private final String TEST_NAME_ATTRIBUTE = String.format("//%s[1]//a", TD_ATTRIBUTE);
     private final String METHOD_NAME_ATTRIBUTE = String.format("//%s[2]", TD_ATTRIBUTE);
@@ -22,11 +24,11 @@ public class NewProjectPage extends Form {
     }
 
     public NewProjectPage() {
-        super(By.xpath("//table[@id='allTests']//div[contains(@class,'danger')]"), "New project");
+        super(By.xpath(NEW_PROJECT_PAGE_LOCATOR), "New project");
     }
 
     private List<ILabel> getTests() {
-        return getElementFactory().findElements(By.xpath("//table[@class='table']//tr"), ElementType.LABEL);
+        return getElementFactory().findElements(By.xpath(TESTS_LIST_LOCATOR), ElementType.LABEL);
     }
 
     public String getDuration(int index) {

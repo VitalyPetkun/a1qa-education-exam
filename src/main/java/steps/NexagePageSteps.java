@@ -4,6 +4,7 @@ import models.Test;
 import org.testng.Assert;
 import pages.NexagePage;
 import utils.SmartLogger;
+import utils.StringUtils;
 import utils.TestUtils;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class NexagePageSteps {
     }
 
     private static String getCurrentTestsPage() {
-        return nexagePage.getCurrentTestsPage().replaceAll("[^0-9]", "");
+        return StringUtils.deleteAllExceptNumbers(nexagePage.getCurrentTestsPage());
     }
 
     private static List<Test> getTests() {

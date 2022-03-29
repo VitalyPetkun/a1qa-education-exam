@@ -2,6 +2,7 @@ package steps;
 
 import org.testng.Assert;
 import pages.ProjectsPage;
+import utils.StringUtils;
 
 public class ProjectsPageSteps {
 
@@ -11,7 +12,7 @@ public class ProjectsPageSteps {
     }
 
     private static String getVersionNumber() {
-        return projectsPage.getVersionText().replaceAll("[^0-9]", "");
+        return StringUtils.deleteAllExceptNumbers(projectsPage.getVersionText());
     }
 
     public static void clickAddBtn() {

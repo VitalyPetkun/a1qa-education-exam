@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 
 public class AddProjectPage extends Form {
 
+    private final String ADD_PROJECT_PAGE_LOCATOR = "//form[@id='addProjectForm']";
+
     private final IButton saveProject = getElementFactory().getButton(By.xpath("//button[@type='submit']"),
             "Save project");
 
@@ -18,7 +20,7 @@ public class AddProjectPage extends Form {
             "Project name");
 
     public AddProjectPage() {
-        super(By.xpath("//form[@id='addProjectForm']"), "Add project page");
+        super(By.xpath(ADD_PROJECT_PAGE_LOCATOR), "Add project page");
     }
 
     public void clickSaveProjectBtn() {
